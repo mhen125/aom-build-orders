@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>AoM Build Orders</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="builds.css" />
+</head>
+<body>
+  <div class="page-shell build-page-shell">
+    <div class="background-overlay"></div>
+    <div class="background-orb orb-one"></div>
+    <div class="background-orb orb-two"></div>
+    <div class="background-orb orb-three"></div>
+
+    <main>
+      <section id="buildPage" class="build-page">
+        <a class="build-back-button" href="index.html" aria-label="Back to Pantheon Selection"></a>
+
+        <div class="build-hero">
+          <div class="build-hero-content">
+            <div id="pantheonLabel" class="build-eyebrow">Pantheon</div>
+
+            <h1 id="godName">Major God</h1>
+
+            <p id="godSummary">
+              Select a major god from the homepage to view build orders.
+            </p>
+
+            <section id="godDetailsPanel" class="god-details-panel hidden" aria-label="Major god details"></section>
+
+            <div class="build-hero-actions">
+              <a class="primary-link-button" href="index.html">Choose Another God</a>
+            </div>
+          </div>
+
+          <div class="build-hero-art-wrap">
+            <div id="godHeroArt" class="build-hero-art"></div>
+          </div>
+        </div>
+
+        <div class="build-section-title">
+          <div>
+            <div class="selected-label">Build Order Library</div>
+            <h2 id="buildSectionHeading">Available Build Orders</h2>
+          </div>
+        </div>
+
+        <div id="buildGrid" class="build-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="builds.js"></script>
+</body>
+</html>

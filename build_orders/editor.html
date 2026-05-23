@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Create / Edit AoM Build Order</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="editor.css" />
+</head>
+
+<body>
+  <main class="page">
+    <section class="build-card editor-shell">
+
+      <header class="editor-topbar">
+        <div>
+          <h1>Build Order Editor</h1>
+          <p>Create the build one row at a time, then save it to the display page.</p>
+        </div>
+
+        <div class="editor-topbar-actions">
+          <label class="editor-picker-label">
+            <span>Editing Build</span>
+            <select id="editorBuildPickerSelect" class="editor-build-picker">
+              <option value="">Loading...</option>
+            </select>
+          </label>
+
+          <a id="backToGodBuildsLink" class="small-button secondary" href="../index.html">Back to God Builds</a>
+          <a id="backToDisplayLink" class="small-button secondary" href="index.html">Back to Display</a>
+
+          <button id="newBuildButton" class="small-button secondary" type="button">New Build</button>
+          <button id="duplicateBuildButton" class="small-button secondary" type="button">Duplicate Build</button>
+          <button id="deleteBuildButton" class="small-button danger" type="button">Delete Build</button>
+          <button id="saveBuildButton" class="small-button" type="button">Save Build</button>
+        </div>
+      </header>
+
+      <section class="editor-panel build-info-panel collapsed-info-panel">
+        <details class="collapsible-editor-panel">
+          <summary class="collapsible-summary">
+            <div>
+              <h2>Build Info</h2>
+              <p>Title, card text, portrait, and goal icon settings.</p>
+            </div>
+
+            <span class="collapse-indicator" aria-hidden="true"></span>
+          </summary>
+
+          <div class="collapsible-content">
+            <div class="build-info-grid">
+              <label class="field">
+                <span>Title</span>
+                <input id="titleInput" type="text" placeholder="3 Miko Boom">
+              </label>
+
+              <label class="field">
+                <span>Subtitle</span>
+                <input id="subtitleInput" type="text" placeholder="Detailed build page subtitle.">
+              </label>
+
+              <label class="field">
+                <span>Card Meta</span>
+                <input id="metaInput" type="text" placeholder="Land · Economy">
+              </label>
+
+              <label class="field">
+                <span>Card Summary</span>
+                <input id="summaryInput" type="text" placeholder="Short description shown on the major god page.">
+              </label>
+
+              <label class="field">
+                <span>Goal Label</span>
+                <input id="goalLabelInput" type="text" placeholder="Goal">
+              </label>
+
+              <label class="field">
+                <span>Goal Text</span>
+                <input id="goalTextInput" type="text" placeholder="Click Age Up">
+              </label>
+
+              <label class="field">
+                <span>Portrait Image Path</span>
+                <input id="portraitInput" type="text" placeholder="../assets/images/gods/amaterasu_portrait.png">
+              </label>
+
+              <label class="field">
+                <span>Goal Icon Path</span>
+                <input id="goalIconInput" type="text" placeholder="../assets/images/score_age_2.png">
+              </label>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section class="editor-panel composer-panel">
+        <div class="panel-heading">
+          <h2>Add a Row</h2>
+          <p>Add either a normal build step or a milestone divider line.</p>
+        </div>
+
+        <div class="row-type-toggle">
+          <button id="stepModeButton" class="toggle-button active" type="button">Build Step</button>
+          <button id="milestoneModeButton" class="toggle-button" type="button">Milestone Text Line</button>
+        </div>
+
+        <div id="stepComposer" class="composer-card">
+          <div class="composer-section-title">Step Details</div>
+
+          <div class="composer-grid">
+            <label class="field tiny">
+              <span>Time</span>
+              <input id="rowTimeInput" type="text" placeholder="0:00">
+            </label>
+
+            <label class="field">
+              <span>Food</span>
+              <input id="rowFoodInput" type="text" placeholder="4 - Hunt">
+            </label>
+
+            <label class="field">
+              <span>Wood</span>
+              <input id="rowWoodInput" type="text" placeholder="1 - Wood">
+            </label>
+
+            <label class="field">
+              <span>Gold</span>
+              <input id="rowGoldInput" type="text" placeholder="1 - Gold">
+            </label>
+
+            <label class="field">
+              <span>Favor</span>
+              <input id="rowFavorInput" type="text" placeholder="Miko - Shrine">
+            </label>
+
+            <label class="field">
+              <span>Pop</span>
+              <input id="rowPopInput" type="text" placeholder="House">
+            </label>
+
+            <label class="field wide">
+              <span>Action / Description</span>
+              <input id="rowActionInput" type="text" placeholder="Miko builds Shrine">
+            </label>
+
+            <label class="field wide">
+              <span>Optional Note</span>
+              <input id="rowNoteInput" type="text" placeholder="This starts favor generation while the economy continues.">
+            </label>
+          </div>
+
+          <div class="composer-section-title split-title">Villager Distribution After This Step</div>
+
+          <div class="split-input-grid">
+            <label class="field compact">
+              <span>Food</span>
+              <input id="splitFoodInput" type="number" min="0" step="1" value="0">
+            </label>
+
+            <label class="field compact">
+              <span>Wood</span>
+              <input id="splitWoodInput" type="number" min="0" step="1" value="0">
+            </label>
+
+            <label class="field compact">
+              <span>Gold</span>
+              <input id="splitGoldInput" type="number" min="0" step="1" value="0">
+            </label>
+
+            <label class="field compact">
+              <span>Favor</span>
+              <input id="splitFavorInput" type="number" min="0" step="1" value="0">
+            </label>
+
+            <label class="field compact">
+              <span>Pop</span>
+              <input id="splitPopInput" type="text" value="0/0" placeholder="4/15">
+            </label>
+          </div>
+        </div>
+
+        <div id="milestoneComposer" class="composer-card hidden">
+          <div class="composer-section-title">Milestone Line</div>
+
+          <label class="field milestone-field">
+            <span>Milestone Text</span>
+            <input id="milestoneTextInput" type="text" placeholder="Age-Up Window">
+          </label>
+        </div>
+
+        <div class="composer-actions">
+          <button id="addRowButton" class="large-add-button" type="button">Add Row</button>
+          <button id="clearComposerButton" class="small-button secondary" type="button">Clear Fields</button>
+        </div>
+      </section>
+
+      <section class="editor-panel rows-panel">
+        <div class="panel-heading row-list-heading">
+          <div>
+            <h2>Current Build Rows</h2>
+            <p>Rows are rendered in this order. Move, edit, duplicate, or delete them as needed.</p>
+          </div>
+
+          <div class="section-actions">
+            <button id="clearRowsButton" class="small-button danger" type="button">Clear Rows</button>
+          </div>
+        </div>
+
+        <div id="rowsList" class="rows-list"></div>
+      </section>
+
+      <section class="editor-panel json-panel">
+        <div class="panel-heading row-list-heading">
+          <div>
+            <h2>Export / Import JSON</h2>
+            <p>Use this to copy builds between browsers or save reusable build-order presets.</p>
+          </div>
+
+          <div class="section-actions">
+            <button id="exportJsonButton" class="small-button secondary" type="button">Export JSON</button>
+            <button id="importJsonButton" class="small-button secondary" type="button">Import JSON</button>
+            <button id="resetButton" class="small-button danger" type="button">Reset Default</button>
+          </div>
+        </div>
+
+        <textarea id="jsonBox" class="json-box" placeholder="Exported JSON will appear here. You can also paste JSON here and click Import JSON."></textarea>
+      </section>
+
+    </section>
+  </main>
+
+  <script src="../data.js"></script>
+  <script src="editor.js"></script>
+</body>
+</html>

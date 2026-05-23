@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>AoM Build Order</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <main class="page">
+    <section class="build-card">
+
+      <header class="build-header">
+        <div class="build-header-main">
+          <div class="detail-god-crest" aria-hidden="true">
+            <div id="detailGodRing" class="detail-god-ring"></div>
+            <img id="buildPortrait" class="detail-god-icon" src="" alt="">
+          </div>
+
+          <div class="title-block">
+            <div class="kicker">Age of Mythology: Retold</div>
+            <h1 id="buildTitle">Build Order</h1>
+            <p id="buildSubtitle">Loading build order...</p>
+          </div>
+        </div>
+
+        <div class="goal-card">
+          <span id="goalLabel">Goal</span>
+          <div>
+            <img id="goalIcon" src="../assets/images/score_age_2.png" alt="Goal icon">
+            <strong id="goalText">Build Order</strong>
+          </div>
+        </div>
+      </header>
+
+      <section class="build-toolbar">
+        <div class="build-picker-wrap">
+          <label for="buildPickerSelect">Switch Build</label>
+          <select id="buildPickerSelect" class="build-picker">
+            <option value="">Loading...</option>
+          </select>
+        </div>
+
+        <div class="toolbar-actions">
+          <a id="backToBuildsLink" class="small-button secondary" href="../index.html">
+            Back to Builds
+          </a>
+
+          <a id="editBuildLink" class="small-button" href="editor.html">
+            Edit Build
+          </a>
+        </div>
+      </section>
+
+      <section id="buildOrderTable" class="build-order-table">
+        Loading...
+      </section>
+
+    </section>
+  </main>
+
+  <script src="../data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>AoM Build Orders</title>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <div class="background-overlay"></div>
+    <div class="background-orb orb-one"></div>
+    <div class="background-orb orb-two"></div>
+    <div class="background-orb orb-three"></div>
+
+    <header class="hero-header">
+      <div class="eyebrow">Age of Mythology: Retold</div>
+      <h1>Build Order Archives</h1>
+      <p>
+        Choose a pantheon, then select a major god to explore build orders,
+        timings, transitions, and strategic openings.
+      </p>
+    </header>
+
+    <main>
+      <section id="selectionSection" class="selection-section" aria-labelledby="selection-heading">
+        <button
+          id="resetSelectionButton"
+          class="back-icon-button hidden"
+          type="button"
+          aria-label="Back to Pantheons"
+        ></button>
+
+        <div class="section-title-row">
+          <div>
+            <div id="selectionEyebrow" class="selected-label">Pantheon Selection</div>
+            <h2 id="selection-heading">Choose a Pantheon</h2>
+            <p id="selectionDescription">
+              Select a pantheon to reveal its major gods.
+            </p>
+          </div>
+        </div>
+
+        <div class="selection-stage">
+          <div id="pantheonGrid" class="pantheon-grid"></div>
+          <div id="godGrid" class="god-grid hidden"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
