@@ -11,6 +11,11 @@ const resetSelectionButton = document.getElementById("resetSelectionButton");
 let selectedPantheonId = null;
 let isTransitioning = false;
 
+function getUrlParam(name) {
+  const params = new URLSearchParams(window.location.search);
+  return params.get(name);
+}
+
 function godCardPortraitPath(godId) {
   return `assets/images/gods/${godId}_portrait.png`;
 }
@@ -25,19 +30,19 @@ function buildUrl(godId) {
 
 function createPantheonCard(pantheon) {
   const card = document.createElement("button");
+
   card.className = "pantheon-card";
   card.type = "button";
   card.dataset.pantheonId = pantheon.id;
   card.setAttribute("aria-label", `Select ${pantheon.name} pantheon`);
 
   card.innerHTML = `
-    <div class="pantheon-icon-shell">
-      <div class="pantheon-art" style="background-image: url('${pantheon.image}')"></div>
-      <div class="pantheon-frame"></div>
-    </div>
+    <div class="pantheon-card-glow"></div>
 
-    <div class="nameplate pantheon-nameplate">
-      <span>${pantheon.name}</span>
+    <div class="pantheon-card-content">
+      <img class="pantheon-card-icon" src="${pantheon.icon}" alt="${pantheon.name} icon">
+      <h3>${pantheon.name}</h3>
+      <p>${pantheon.description || "Select this pantheon to view its major gods."}</p>
     </div>
   `;
 
@@ -54,6 +59,7 @@ function createPantheonCard(pantheon) {
 
 function createGodCard(god, index) {
   const card = document.createElement("button");
+
   card.className = "god-card";
   card.type = "button";
   card.style.animationDelay = `${index * 75}ms`;
@@ -62,14 +68,11 @@ function createGodCard(god, index) {
   card.setAttribute("aria-label", `View build orders for ${god.name}`);
 
   card.innerHTML = `
-    <div class="god-icon-shell">
-      <div class="god-art" style="background-image: url('${godCardPortraitPath(god.id)}')"></div>
-      <div class="god-frame"></div>
+    <div class="god-card-portrait-wrap">
+      <img class="god-card-portrait" src="${godCardPortraitPath(god.id)}" alt="${god.name}">
     </div>
 
-    <div class="nameplate god-nameplate">
-      <span>${god.name}</span>
-    </div>
+    <div class="god-card-name">${god.name}</div>
   `;
 
   card.addEventListener("click", () => {
@@ -80,6 +83,10 @@ function createGodCard(god, index) {
 }
 
 function renderPantheons() {
+  if (!pantheonGrid) {
+    return;
+  }
+
   pantheonGrid.innerHTML = "";
 
   pantheons.forEach((pantheon) => {
@@ -88,6 +95,10 @@ function renderPantheons() {
 }
 
 function renderGods(pantheon) {
+  if (!godGrid) {
+    return;
+  }
+
   godGrid.innerHTML = "";
 
   pantheon.gods.forEach((god, index) => {
@@ -98,7 +109,7 @@ function renderGods(pantheon) {
 function selectPantheon(pantheonId) {
   const pantheon = pantheons.find((item) => item.id === pantheonId);
 
-  if (!pantheon) {
+  if (!pantheon || !selectionSection) {
     return;
   }
 
@@ -109,10 +120,21 @@ function selectPantheon(pantheonId) {
   selectionSection.classList.add("has-pantheon-bg");
   selectionSection.classList.add("god-selection-active");
 
-  selectionEyebrow.textContent = "";
-  selectionHeading.textContent = "Choose a Major God";
-  selectionDescription.textContent = "";
-  resetSelectionButton.classList.remove("hidden");
+  if (selectionEyebrow) {
+    selectionEyebrow.textContent = `${pantheon.name} Pantheon`;
+  }
+
+  if (selectionHeading) {
+    selectionHeading.textContent = "Choose a Major God";
+  }
+
+  if (selectionDescription) {
+    selectionDescription.textContent = "Select a major god to view build orders, openings, and strategy notes.";
+  }
+
+  if (resetSelectionButton) {
+    resetSelectionButton.classList.remove("hidden");
+  }
 
   pantheonGrid.classList.add("leaving");
 
@@ -133,19 +155,30 @@ function selectPantheon(pantheonId) {
 }
 
 function clearSelection() {
-  if (isTransitioning) {
+  if (isTransitioning || !selectionSection) {
     return;
   }
 
   selectedPantheonId = null;
   isTransitioning = true;
 
-  selectionEyebrow.textContent = "Pantheon Selection";
-  selectionHeading.textContent = "Choose a Pantheon";
-  selectionDescription.textContent = "Select a pantheon to reveal its major gods.";
-  resetSelectionButton.classList.add("hidden");
-  selectionSection.classList.remove("god-selection-active");
+  if (selectionEyebrow) {
+    selectionEyebrow.textContent = "Pantheon Selection";
+  }
 
+  if (selectionHeading) {
+    selectionHeading.textContent = "Choose a Pantheon";
+  }
+
+  if (selectionDescription) {
+    selectionDescription.textContent = "Select a pantheon to reveal its major gods.";
+  }
+
+  if (resetSelectionButton) {
+    resetSelectionButton.classList.add("hidden");
+  }
+
+  selectionSection.classList.remove("god-selection-active");
   godGrid.classList.add("leaving");
 
   window.setTimeout(() => {
@@ -166,6 +199,41 @@ function clearSelection() {
   }, 260);
 }
 
-resetSelectionButton.addEventListener("click", clearSelection);
+function initFromUrl() {
+  const requestedPantheonId = getUrlParam("pantheon");
 
-renderPantheons();
+  if (!requestedPantheonId) {
+    return;
+  }
+
+  const pantheon = pantheons.find((item) => item.id === requestedPantheonId);
+
+  if (!pantheon) {
+    return;
+  }
+
+  window.setTimeout(() => {
+    selectPantheon(requestedPantheonId);
+  }, 80);
+}
+
+function initHomePage() {
+  if (!window.AOM_DATA || !Array.isArray(window.AOM_DATA.pantheons)) {
+    console.error("AOM_DATA.pantheons was not found. Make sure data.js loads before app.js.");
+    return;
+  }
+
+  if (!selectionSection || !pantheonGrid || !godGrid) {
+    console.error("Home page elements were not found. Make sure app.js is only loaded on index.html.");
+    return;
+  }
+
+  if (resetSelectionButton) {
+    resetSelectionButton.addEventListener("click", clearSelection);
+  }
+
+  renderPantheons();
+  initFromUrl();
+}
+
+initHomePage();

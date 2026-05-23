@@ -14,81 +14,98 @@ const buildSectionHeading = document.getElementById("buildSectionHeading");
 const GOD_DETAILS = {
   zeus: {
     focus: "Infantry and Heroes.",
-    bonuses: ["Starts with 10 Favor.",
+    bonuses: [
+      "Starts with 10 Favor.",
       "Gains Favor 20% faster.",
       "Myth units cost 1 less population.",
       "Infantry do +60% damage to buildings.",
       "Hoplites move 15% faster."
     ]
   },
+
   hades: {
     focus: "Ranged Soldiers and Buildings.",
     bonuses: []
   },
+
   poseidon: {
     focus: "Cavalry and Economy.",
     bonuses: []
   },
+
   demeter: {
     focus: "Expansion and Resource Gathering.",
     bonuses: []
   },
+
   ra: {
     focus: "Migdol Stronghold units and Empowerment.",
     bonuses: []
   },
+
   isis: {
     focus: "Technology.",
-    bonuses: ["Town Ceneter and Citaedel Centers support +5 population.",
-      "Monuments shield against enemy God Powers (25 range; 50 when empowered)",
-      "Empowered Monuments heal nearby units (50 range) and generate Favor 100% faster.",
+    bonuses: [
+      "Town Centers and Citadel Centers support +5 population.",
+      "Monuments shield against enemy God Powers.",
+      "Empowered Monuments heal nearby units and generate Favor faster.",
       "Technologies cost -10%.",
-      "Obelisks  cost -5 Gold, and are built 40% faster."
+      "Obelisks cost -5 Gold and are built faster."
     ]
   },
+
   set: {
     focus: "Barracks units.",
-    bonuses: ["Pharohs can summon Animals of Set.",
-      "Priests can convert wild animals, but converted animals lost 25% of their Food.",
-      "+5% Spearmen, Axemen, and Slinger speed.",
-      "Barracks, Siege Works, and Migdol Strongholds cost +25% Gold.",
-      "Monuments reduce the cost of units nearby Barracks and Migdol Strongholds by 10%."
+    bonuses: [
+      "Pharaohs can summon Animals of Set.",
+      "Priests can convert wild animals.",
+      "Spearmen, Axemen, and Slingers move faster.",
+      "Barracks, Siege Works, and Migdol Strongholds cost more Gold.",
+      "Monuments reduce the cost of units near Barracks and Migdol Strongholds."
     ]
   },
+
   thor: {
     focus: "Dwarves and Armory.",
-    bonuses: ["Start with Dwarves instead of Gatherers.",
-      "Dwarves cost -10 Gold, and gather Food and Wood nearly as fast as Gatherers.",
-      "Dwarven Armor can be built and research upgrades in any age.",
-      "Armory upgrades cost -10% less.",
-      "Receive a free Dwarf for each Dwarven Armory upgrade.",
-      "Cab research 3 extra Dwarven Armory upgrades."
+    bonuses: [
+      "Starts with Dwarves instead of Gatherers.",
+      "Dwarves cost less Gold and gather Food and Wood efficiently.",
+      "Dwarven Armory can be built and upgraded in any age.",
+      "Armory upgrades cost less.",
+      "Receives a free Dwarf for each Dwarven Armory upgrade.",
+      "Can research extra Dwarven Armory upgrades."
     ]
   },
+
   odin: {
     focus: "Great Hall units.",
     bonuses: []
   },
+
   loki: {
     focus: "Myth units.",
     bonuses: []
   },
+
   freyr: {
     focus: "Technology and Defense.",
-    bonuses: ["Has a potent defensive God Power that gets more powerful with each age advanced.",
-      "Technologies cost -50% Food, Wood, and Gold, but take 150% longer to research.",
-      "Hill Forts and Hill Fort units +10% damage.",
+    bonuses: [
+      "Has a defensive God Power that grows stronger each age.",
+      "Technologies cost less Food, Wood, and Gold, but take longer to research.",
+      "Hill Forts and Hill Fort units deal more damage.",
       "Repairing buildings is free.",
       "Gatherers and Dwarves can repair."
     ]
   },
+
   oranos: {
     focus: "Vision and Mobility.",
-    bonuses: ["Citizens can build a new Sky Passage each age.",
-      "Units can enter Sky Passages to instantly teleport between them.",
-      "All units have +4 Line of Sight.",
-      "Oracles generate +25% Favor at full Line of Sight.",
-      "Damaged enemy units remain visibile for 25 seconds."
+    bonuses: [
+      "Citizens can build a new Sky Passage each age.",
+      "Units can teleport between Sky Passages.",
+      "All units have increased Line of Sight.",
+      "Oracles generate more Favor at full Line of Sight.",
+      "Damaged enemy units remain visible for a short duration."
     ]
   },
 
@@ -96,29 +113,43 @@ const GOD_DETAILS = {
     focus: "Economy and Buildings.",
     bonuses: []
   },
+
   kronos: {
     focus: "Siege and Myth units.",
     bonuses: []
   },
+
   fuxi: {
     focus: "Human Soldiers and Heroes.",
-    bonuses: ["God Blessing: Yin and Yang.",
-      "On Favored Land: Buildings research 300% faster and Military Camp/Machine Workshop additions cost -25%.",
-      "Gains access to Nezha in the Classical Age, an additional legendary hero that gets stronger each age.",
+    bonuses: [
+      "God Blessing: Yin and Yang.",
+      "On Favored Land, buildings research faster.",
+      "On Favored Land, Military Camp and Machine Workshop additions cost less.",
+      "Gains access to Nezha in the Classical Age."
     ]
   },
+
+  nuwa: {
+    focus: "Economy and Support.",
+    bonuses: []
+  },
+
   nüwa: {
     focus: "Economy and Support.",
     bonuses: []
   },
+
   shennong: {
     focus: "Economy and Farming.",
-    bonuses: ["God Blessing: Gift of Beasts.",
-      "On Favored Land: Myth units recover 1.5 hit points per second, increasing by 1.5 per age.",
-      "Farms are available in Archaic Age, and build instantly on favored land.",
-      "Plow, Irrigation, and Flood control are researched instantly for free in their respective ages.",
+    bonuses: [
+      "God Blessing: Gift of Beasts.",
+      "On Favored Land, Myth units regenerate hit points.",
+      "Farms are available in the Archaic Age.",
+      "Farms build instantly on Favored Land.",
+      "Farm upgrades are researched instantly for free in their respective ages."
     ]
   },
+
   amaterasu: {
     focus: "Economy and Samurai.",
     bonuses: [
@@ -128,32 +159,41 @@ const GOD_DETAILS = {
       "Samurai and Onna-mushas regenerate hit points, twice as fast in combat."
     ]
   },
+
   tsukuyomi: {
     focus: "Technology, Shinobi, and Cavalry.",
     bonuses: [
-      "Increases Shinobi and Cavalry attack with each Bushidö tier.",
-      "Each technology researched grants Bushidö XP.",
-      "Advancing to the next Age is 25% faster.",
+      "Increases Shinobi and Cavalry attack with each Bushido tier.",
+      "Each technology researched grants Bushido XP.",
+      "Advancing to the next Age is faster.",
       "A free Kitsune appears at the Temple each Age."
     ]
   },
+
   susanoo: {
     focus: "Military and Economy.",
-    bonuses: [
-    ]
+    bonuses: []
   },
+
+  huitzilopochtli: {
+    focus: "Military and Economy.",
+    bonuses: []
+  },
+
   huitlipochtli: {
     focus: "Military and Economy.",
     bonuses: []
   },
+
   quetzalcoatl: {
     focus: "Military and Economy.",
     bonuses: []
   },
+
   tezcatlipoca: {
     focus: "Military and Economy.",
     bonuses: []
-  },
+  }
 };
 
 function getGodIdFromUrl() {
@@ -178,6 +218,14 @@ function findGod(godId) {
 
 function godHeroPortraitPath(godId) {
   return `assets/images/gods/${godId}_breakoutportrait.png`;
+}
+
+function pantheonReturnUrl(pantheonId) {
+  if (!pantheonId) {
+    return "index.html";
+  }
+
+  return `index.html?pantheon=${encodeURIComponent(pantheonId)}`;
 }
 
 function buildDetailUrl(buildId, godId) {
@@ -244,8 +292,7 @@ function createFallbackBuild(god, pantheon) {
       id: `${god.id}-starter-build`,
       title: `${god.name} Starter Build`,
       meta: `${pantheon.name} · Draft`,
-      summary:
-        "This build slot is ready for a real build order. Create one in the editor or add it to data.js.",
+      summary: "This build slot is ready for a real build order. Create one in the editor or add it to data.js.",
       steps: []
     }
   ];
@@ -262,6 +309,22 @@ function escapeHtml(value) {
 
 function getGodDetails(god) {
   return god.details || GOD_DETAILS[god.id] || null;
+}
+
+function updateReturnLinks(pantheon) {
+  const backButton = document.querySelector(".build-back-button");
+  const chooseAnotherGodLink = document.querySelector(".primary-link-button");
+  const url = pantheonReturnUrl(pantheon?.id);
+
+  if (backButton) {
+    backButton.href = url;
+    backButton.setAttribute("aria-label", "Back to pantheon selection");
+  }
+
+  if (chooseAnotherGodLink) {
+    chooseAnotherGodLink.href = url;
+    chooseAnotherGodLink.textContent = "Choose Another God";
+  }
 }
 
 function renderGodDetails(god) {
@@ -312,6 +375,7 @@ function renderHero(god, pantheon) {
   godHeroArt.style.backgroundImage = `url("${godHeroPortraitPath(god.id)}")`;
   buildSectionHeading.textContent = `${god.name} Build Orders`;
 
+  updateReturnLinks(pantheon);
   renderGodDetails(god);
 }
 
@@ -364,6 +428,8 @@ function renderNotFound() {
   godName.textContent = "Build Orders Not Found";
   godSummary.textContent =
     "The requested god could not be found. Return to the homepage and choose a pantheon again.";
+
+  updateReturnLinks(null);
 
   if (godDetailsPanel) {
     godDetailsPanel.classList.add("hidden");
