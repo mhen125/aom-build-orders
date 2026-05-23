@@ -8,7 +8,49 @@ const ICONS = {
   gold: "../assets/images/gold.png",
   favor: "../assets/images/favor.png",
   pop: "../assets/images/res_pop.png",
-  villager: "../assets/images/res_population.png"
+  population: "../assets/images/res_pop.png",
+  villager: "../assets/images/unit_type_villager.png",
+  gatherer: "../assets/images/villager_norse_icon.png",
+  dwarf: "../assets/images/villager_dwarf_icon.png",
+  ox: "../assets/images/ox_cart_icon.png",
+  cart: "../assets/images/ox_cart_icon.png",
+  miko: "../assets/images/miko_icon.png",
+  temple: "../assets/images/temple_icon.png",
+  shrine: "../assets/images/shrine_icon.png",
+  storehouse: "../assets/images/storehouse_icon.png",
+  kuafu: "../assets/images/kuafu_icon.png",
+  kuafu_hero: "../assets/images/kuafu_hero_icon.png",
+  pickaxe: "../assets/images/pickaxe_icon.png",
+  hand_axe: "../assets/images/hand_axe_icon.png",
+  priest: "../assets/images/priest_icon.png",
+  pharaoh: "../assets/images/pharaoh_icon.png",
+  house: "../assets/images/house_icon.png",
+};
+
+const SHORTCODE_ALIASES = {
+  f: "food",
+  w: "wood",
+  g: "gold",
+  fa: "favor",
+  house: "pop",
+  houses: "pop",
+  pop: "pop",
+  population: "population",
+  villager: "villager",
+  villagers: "villager",
+  gatherer: "gatherer",
+  gatherers: "gatherer",
+  dwarf: "dwarf",
+  dwarves: "dwarf",
+  ox: "ox",
+  cart: "cart",
+  ox_cart: "cart",
+  oxcart: "cart",
+  food: "food",
+  wood: "wood",
+  gold: "gold",
+  favor: "favor",
+  miko: "miko",
 };
 
 const HUD_RING_BASE_PATH = "../assets/images/pantheons/major_gods/hud/";
@@ -20,11 +62,13 @@ const GOD_HUD_RING_FILES = {
   oranos: "Hud_Ring_Atl_Oranos.png",
 
   huitzilopochtli: "Hud_Ring_Azt_Huitzilopochtli.png",
+  huitlipochtli: "Hud_Ring_Azt_Huitzilopochtli.png",
   quetzalcoatl: "Hud_Ring_Azt_Quetzalcoatl.png",
   tezcatlipoca: "Hud_Ring_Azt_Tezcatlipoca.png",
 
   fuxi: "Hud_Ring_Chi_Fuxi.png",
   nuwa: "Hud_Ring_Chi_Nuwa.png",
+  nüwa: "Hud_Ring_Chi_Nuwa.png",
   shennong: "Hud_Ring_Chi_Shennong.png",
 
   isis: "Hud_Ring_Egy_Isis.png",
@@ -53,7 +97,7 @@ const DEFAULT_BUILD = {
   goalLabel: "Goal",
   goalText: "Click Age Up",
   portrait: "../assets/images/gods/amaterasu_portrait.png",
-  goalIcon: "images/score_age_2.png",
+  goalIcon: "../assets/images/score_age_2.png",
   sourceGodId: "amaterasu",
   sourcePantheonId: "japanese",
   steps: [
@@ -93,78 +137,6 @@ const DEFAULT_BUILD = {
         gold: 0,
         favor: 1,
         pop: "5/15"
-      }
-    },
-    {
-      time: "1:10",
-      food: "",
-      wood: "",
-      gold: "1 - Gold",
-      favor: "",
-      pop: "",
-      action: "Miko builds Temple",
-      note: "Move the next villager to gold so the age-up cost is ready.",
-      split: {
-        food: 4,
-        wood: 1,
-        gold: 1,
-        favor: 1,
-        pop: "6/15"
-      }
-    },
-    {
-      time: "1:35",
-      food: "Next - Hunt",
-      wood: "",
-      gold: "",
-      favor: "",
-      pop: "",
-      action: "Maintain villager production",
-      note: "The Town Center should stay active the entire opening.",
-      split: {
-        food: 5,
-        wood: 1,
-        gold: 1,
-        favor: 1,
-        pop: "7/15"
-      }
-    },
-    {
-      time: "2:00",
-      food: "",
-      wood: "Next - Wood",
-      gold: "",
-      favor: "",
-      pop: "House",
-      action: "Avoid population block",
-      note: "Use this row style whenever the population timing matters.",
-      split: {
-        food: 5,
-        wood: 2,
-        gold: 1,
-        favor: 1,
-        pop: "8/25"
-      }
-    },
-    {
-      type: "phase",
-      label: "Age-Up Window"
-    },
-    {
-      time: "2:30",
-      food: "",
-      wood: "",
-      gold: "",
-      favor: "",
-      pop: "",
-      action: "Click Age Up",
-      note: "Exact timing depends on hunt quality, walking distance, and idle time.",
-      split: {
-        food: 5,
-        wood: 2,
-        gold: 1,
-        favor: 1,
-        pop: "8/25"
       }
     }
   ]
@@ -290,11 +262,11 @@ function repairPortraitPath(portrait, build = {}) {
   }
 
   if (normalizedPortrait.startsWith("build_orders/images/")) {
-    return normalizedPortrait.replace("build_orders/", "");
+    return normalizedPortrait.replace("build_orders/", "../assets/");
   }
 
-  if (normalizedPortrait === "images/amaterasu_icon.png") {
-    return godPortraitPath("amaterasu");
+  if (normalizedPortrait.startsWith("images/")) {
+    return normalizedPortrait.replace("images/", "../assets/images/");
   }
 
   const oldGodIconMatch = normalizedPortrait.match(/^images\/(.+)_icon\.png$/);
@@ -321,12 +293,20 @@ function repairGoalIconPath(goalIcon) {
     return `../${normalizedGoalIcon}`;
   }
 
+  if (normalizedGoalIcon.startsWith("/assets/")) {
+    return `..${normalizedGoalIcon}`;
+  }
+
   if (normalizedGoalIcon.startsWith("/images/")) {
-    return normalizedGoalIcon.slice(1);
+    return `../assets${normalizedGoalIcon}`;
+  }
+
+  if (normalizedGoalIcon.startsWith("images/")) {
+    return normalizedGoalIcon.replace("images/", "../assets/images/");
   }
 
   if (normalizedGoalIcon.startsWith("build_orders/images/")) {
-    return normalizedGoalIcon.replace("build_orders/", "");
+    return normalizedGoalIcon.replace("build_orders/images/", "../assets/images/");
   }
 
   return normalizedGoalIcon;
@@ -361,7 +341,7 @@ function staticBuildToDisplayBuild(build, god, pantheon) {
     goalLabel: build.goalLabel || "Goal",
     goalText: build.goalText || build.meta || "Build Order",
     portrait: build.portrait || godPortraitPath(god.id),
-    goalIcon: build.goalIcon || "images/score_age_2.png",
+    goalIcon: build.goalIcon || "../assets/images/score_age_2.png",
     steps: Array.isArray(build.steps) ? build.steps : [],
     meta: build.meta || "",
     sourceGodId: god.id,
@@ -497,8 +477,59 @@ function formatArrowText(value) {
     .replace(/\s+-\s*$/g, " →");
 }
 
+function getShortcodeIconName(rawName) {
+  const key = String(rawName || "")
+    .trim()
+    .toLowerCase()
+    .replaceAll("-", "_")
+    .replaceAll(" ", "_");
+
+  return SHORTCODE_ALIASES[key] || key;
+}
+
 function makeIcon(name, className, altText) {
-  return `<img class="${className}" src="${ICONS[name]}" alt="${escapeHtml(altText)}">`;
+  const iconPath = ICONS[name];
+
+  if (!iconPath) {
+    return "";
+  }
+
+  return `<img class="${className}" src="${iconPath}" alt="${escapeHtml(altText)}">`;
+}
+
+function makeShortcodeIcon(name) {
+  const iconName = getShortcodeIconName(name);
+  const iconPath = ICONS[iconName];
+
+  if (!iconPath) {
+    return `[${escapeHtml(name)}]`;
+  }
+
+  return `<img class="shortcode-icon" src="${iconPath}" alt="${escapeHtml(iconName)}" title="${escapeHtml(iconName)}">`;
+}
+
+function renderShortcodes(value) {
+  const text = String(value ?? "");
+
+  if (!text) {
+    return "";
+  }
+
+  const parts = text.split(/(\[[a-zA-Z0-9_\-\s]+\])/g);
+
+  return parts.map((part) => {
+    const match = part.match(/^\[([a-zA-Z0-9_\-\s]+)\]$/);
+
+    if (match) {
+      return makeShortcodeIcon(match[1]);
+    }
+
+    return escapeHtml(part);
+  }).join("");
+}
+
+function renderFormattedShortcodes(value) {
+  return renderShortcodes(formatArrowText(value));
 }
 
 function makeHeader(label, iconName) {
@@ -518,7 +549,7 @@ function makeResourceCell(value, resourceClass, iconName) {
   return `
     <span class="resource-pill ${resourceClass}">
       ${makeIcon(iconName, "mini-icon", resourceClass)}
-      <span>${escapeHtml(formatArrowText(value))}</span>
+      <span>${renderFormattedShortcodes(value)}</span>
     </span>
   `;
 }
@@ -535,11 +566,11 @@ function makeActionCell(step) {
     ${hasAction ? `
       <span class="action-box">
         ${makeIcon("villager", "mini-icon", "Action")}
-        <span>${escapeHtml(step.action)}</span>
+        <span>${renderShortcodes(step.action)}</span>
       </span>
     ` : ""}
 
-    ${hasNote ? `<span class="note">${escapeHtml(step.note)}</span>` : ""}
+    ${hasNote ? `<span class="note">${renderShortcodes(step.note)}</span>` : ""}
   `;
 }
 
@@ -632,9 +663,10 @@ function renderBuildInfo(build) {
 
   const context = getGodContextForBuild(build);
   const godId = context?.god?.id || build.sourceGodId || getUrlParam("god") || "";
+  const pantheonId = context?.pantheon?.id || build.sourcePantheonId || "";
 
   document.getElementById("buildTitle").textContent = build.title;
-  document.getElementById("buildSubtitle").textContent = build.subtitle;
+  document.getElementById("buildSubtitle").innerHTML = renderShortcodes(build.subtitle);
 
   const portrait = document.getElementById("buildPortrait");
 
@@ -658,7 +690,7 @@ function renderBuildInfo(build) {
   const goalText = document.getElementById("goalText");
 
   if (goalText) {
-    goalText.textContent = build.goalText;
+    goalText.innerHTML = renderShortcodes(build.goalText);
   }
 
   const goalIcon = document.getElementById("goalIcon");
@@ -687,6 +719,8 @@ function renderBuildInfo(build) {
   if (backToBuildsLink) {
     if (godId) {
       backToBuildsLink.href = `../builds.html?god=${encodeURIComponent(godId)}`;
+    } else if (pantheonId) {
+      backToBuildsLink.href = `../index.html?pantheon=${encodeURIComponent(pantheonId)}`;
     } else {
       backToBuildsLink.href = "../index.html";
     }
@@ -722,7 +756,7 @@ function renderBuildOrderTable(build) {
           <td colspan="8">
             <span class="phase-label">
               ${makeIcon("pop", "mini-icon", "Phase")}
-              ${escapeHtml(step.label || "Phase")}
+              ${renderShortcodes(step.label || "Phase")}
             </span>
           </td>
         </tr>
@@ -731,7 +765,7 @@ function renderBuildOrderTable(build) {
 
     return `
       <tr>
-        <td class="time-cell">${escapeHtml(step.time || "")}</td>
+        <td class="time-cell">${renderShortcodes(step.time || "")}</td>
         <td>${makeResourceCell(step.food, "food", "food")}</td>
         <td>${makeResourceCell(step.wood, "wood", "wood")}</td>
         <td>${makeResourceCell(step.gold, "gold", "gold")}</td>
