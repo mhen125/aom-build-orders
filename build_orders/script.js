@@ -9,22 +9,39 @@ const ICONS = {
   favor: "../assets/images/favor.png",
   pop: "../assets/images/res_pop.png",
   population: "../assets/images/res_pop.png",
+
   villager: "../assets/images/unit_type_villager.png",
+  villagers: "../assets/images/unit_type_villager.png",
+
   gatherer: "../assets/images/villager_norse_icon.png",
+  gatherers: "../assets/images/villager_norse_icon.png",
+
   dwarf: "../assets/images/villager_dwarf_icon.png",
+  dwarves: "../assets/images/villager_dwarf_icon.png",
+
   ox: "../assets/images/ox_cart_icon.png",
   cart: "../assets/images/ox_cart_icon.png",
+  ox_cart: "../assets/images/ox_cart_icon.png",
+  oxcart: "../assets/images/ox_cart_icon.png",
+
   miko: "../assets/images/miko_icon.png",
   temple: "../assets/images/temple_icon.png",
   shrine: "../assets/images/shrine_icon.png",
   storehouse: "../assets/images/storehouse_icon.png",
+
   kuafu: "../assets/images/kuafu_icon.png",
   kuafu_hero: "../assets/images/kuafu_hero_icon.png",
+
   pickaxe: "../assets/images/pickaxe_icon.png",
+  pick_axe: "../assets/images/pickaxe_icon.png",
+  handaxe: "../assets/images/hand_axe_icon.png",
   hand_axe: "../assets/images/hand_axe_icon.png",
+
   priest: "../assets/images/priest_icon.png",
   pharaoh: "../assets/images/pharaoh_icon.png",
+
   house: "../assets/images/house_icon.png",
+  houses: "../assets/images/house_icon.png"
 };
 
 const SHORTCODE_ALIASES = {
@@ -32,25 +49,47 @@ const SHORTCODE_ALIASES = {
   w: "wood",
   g: "gold",
   fa: "favor",
-  house: "pop",
-  houses: "pop",
-  pop: "pop",
-  population: "population",
-  villager: "villager",
-  villagers: "villager",
-  gatherer: "gatherer",
-  gatherers: "gatherer",
-  dwarf: "dwarf",
-  dwarves: "dwarf",
-  ox: "ox",
-  cart: "cart",
-  ox_cart: "cart",
-  oxcart: "cart",
+
   food: "food",
   wood: "wood",
   gold: "gold",
   favor: "favor",
+
+  pop: "pop",
+  population: "population",
+
+  house: "house",
+  houses: "house",
+
+  villager: "villager",
+  villagers: "villager",
+
+  gatherer: "gatherer",
+  gatherers: "gatherer",
+
+  dwarf: "dwarf",
+  dwarves: "dwarf",
+
+  ox: "ox",
+  cart: "cart",
+  ox_cart: "ox_cart",
+  oxcart: "ox_cart",
+
   miko: "miko",
+  temple: "temple",
+  shrine: "shrine",
+  storehouse: "storehouse",
+
+  kuafu: "kuafu",
+  kuafu_hero: "kuafu_hero",
+
+  pickaxe: "pickaxe",
+  pick_axe: "pickaxe",
+  handaxe: "hand_axe",
+  hand_axe: "hand_axe",
+
+  priest: "priest",
+  pharaoh: "pharaoh"
 };
 
 const HUD_RING_BASE_PATH = "../assets/images/pantheons/major_gods/hud/";
@@ -100,46 +139,7 @@ const DEFAULT_BUILD = {
   goalIcon: "../assets/images/score_age_2.png",
   sourceGodId: "amaterasu",
   sourcePantheonId: "japanese",
-  steps: [
-    {
-      type: "phase",
-      label: "Opening"
-    },
-    {
-      time: "0:00",
-      food: "4 - Hunt",
-      wood: "",
-      gold: "",
-      favor: "",
-      pop: "",
-      action: "Queue villagers",
-      note: "Send the starting villagers to food immediately.",
-      split: {
-        food: 4,
-        wood: 0,
-        gold: 0,
-        favor: 0,
-        pop: "4/15"
-      }
-    },
-    {
-      time: "0:20",
-      food: "",
-      wood: "1 - Wood",
-      gold: "",
-      favor: "",
-      pop: "",
-      action: "Miko builds Shrine",
-      note: "This starts favor generation while the economy continues.",
-      split: {
-        food: 4,
-        wood: 1,
-        gold: 0,
-        favor: 1,
-        pop: "5/15"
-      }
-    }
-  ]
+  steps: []
 };
 
 let buildCollection = [];
@@ -238,6 +238,22 @@ function godHudRingPath(godId) {
   return `${HUD_RING_BASE_PATH}${filename}`;
 }
 
+function godOverviewUrl(godId) {
+  if (!godId) {
+    return "../index.html";
+  }
+
+  return `../builds.html?god=${encodeURIComponent(godId)}`;
+}
+
+function pantheonSelectionUrl(pantheonId) {
+  if (!pantheonId) {
+    return "../index.html";
+  }
+
+  return `../index.html?pantheon=${encodeURIComponent(pantheonId)}`;
+}
+
 function repairPortraitPath(portrait, build = {}) {
   if (!portrait) {
     if (build.sourceGodId) {
@@ -262,7 +278,7 @@ function repairPortraitPath(portrait, build = {}) {
   }
 
   if (normalizedPortrait.startsWith("build_orders/images/")) {
-    return normalizedPortrait.replace("build_orders/", "../assets/");
+    return normalizedPortrait.replace("build_orders/images/", "../assets/images/");
   }
 
   if (normalizedPortrait.startsWith("images/")) {
@@ -487,25 +503,22 @@ function getShortcodeIconName(rawName) {
   return SHORTCODE_ALIASES[key] || key;
 }
 
-function makeIcon(name, className, altText) {
-  const iconPath = ICONS[name];
-
-  if (!iconPath) {
-    return "";
-  }
-
-  return `<img class="${className}" src="${iconPath}" alt="${escapeHtml(altText)}">`;
-}
-
-function makeShortcodeIcon(name) {
-  const iconName = getShortcodeIconName(name);
+function makeShortcodeIcon(rawName) {
+  const iconName = getShortcodeIconName(rawName);
   const iconPath = ICONS[iconName];
 
   if (!iconPath) {
-    return `[${escapeHtml(name)}]`;
+    return `[${escapeHtml(rawName)}]`;
   }
 
-  return `<img class="shortcode-icon" src="${iconPath}" alt="${escapeHtml(iconName)}" title="${escapeHtml(iconName)}">`;
+  return `
+    <img
+      class="shortcode-icon"
+      src="${iconPath}"
+      alt="${escapeHtml(iconName)}"
+      title="${escapeHtml(iconName)}"
+    >
+  `;
 }
 
 function renderShortcodes(value) {
@@ -532,23 +545,31 @@ function renderFormattedShortcodes(value) {
   return renderShortcodes(formatArrowText(value));
 }
 
-function makeHeader(label, iconName) {
+function makeDistributionIcon(name, altText) {
+  const iconPath = ICONS[name];
+
+  if (!iconPath) {
+    return "";
+  }
+
+  return `<img class="mini-icon distribution-icon" src="${iconPath}" alt="${escapeHtml(altText)}">`;
+}
+
+function makeHeader(label) {
   return `
     <span class="header-label">
-      ${makeIcon(iconName, "icon", label)}
       <span>${escapeHtml(label)}</span>
     </span>
   `;
 }
 
-function makeResourceCell(value, resourceClass, iconName) {
+function makeResourceCell(value, resourceClass) {
   if (!value || String(value).trim() === "") {
     return "";
   }
 
   return `
     <span class="resource-pill ${resourceClass}">
-      ${makeIcon(iconName, "mini-icon", resourceClass)}
       <span>${renderFormattedShortcodes(value)}</span>
     </span>
   `;
@@ -563,14 +584,26 @@ function makeActionCell(step) {
   }
 
   return `
-    ${hasAction ? `
-      <span class="action-box">
-        ${makeIcon("villager", "mini-icon", "Action")}
-        <span>${renderShortcodes(step.action)}</span>
-      </span>
-    ` : ""}
+    ${
+      hasAction
+        ? `
+          <span class="action-box">
+            <span>${renderShortcodes(step.action)}</span>
+          </span>
+        `
+        : ""
+    }
 
     ${hasNote ? `<span class="note">${renderShortcodes(step.note)}</span>` : ""}
+  `;
+}
+
+function makeDistributionPart(iconName, label, value) {
+  return `
+    <span class="distribution-part">
+      ${makeDistributionIcon(iconName, label)}
+      <span>${escapeHtml(value)}</span>
+    </span>
   `;
 }
 
@@ -586,21 +619,13 @@ function makeVillagerDistributionCell(split) {
 
   return `
     <div class="villager-distribution">
-      <span class="distribution-part">
-        ${makeIcon("food", "mini-icon", "Food")}${food}
-      </span>
-
-      <span class="distribution-part">
-        ${makeIcon("wood", "mini-icon", "Wood")}${wood}
-      </span>
-
-      <span class="distribution-part">
-        ${makeIcon("gold", "mini-icon", "Gold")}${gold}
-      </span>
-
-      <span class="distribution-part">
-        ${makeIcon("favor", "mini-icon", "Favor")}${favor}
-      </span>
+      ${makeDistributionPart("food", "Food", food)}
+      <span class="distribution-separator">/</span>
+      ${makeDistributionPart("wood", "Wood", wood)}
+      <span class="distribution-separator">/</span>
+      ${makeDistributionPart("gold", "Gold", gold)}
+      <span class="distribution-separator">/</span>
+      ${makeDistributionPart("favor", "Favor", favor)}
     </div>
   `;
 }
@@ -664,9 +689,18 @@ function renderBuildInfo(build) {
   const context = getGodContextForBuild(build);
   const godId = context?.god?.id || build.sourceGodId || getUrlParam("god") || "";
   const pantheonId = context?.pantheon?.id || build.sourcePantheonId || "";
+  const godName = context?.god?.name || godId || "Major God";
 
   document.getElementById("buildTitle").textContent = build.title;
   document.getElementById("buildSubtitle").innerHTML = renderShortcodes(build.subtitle);
+
+  const godOverviewLink = document.getElementById("godOverviewLink");
+
+  if (godOverviewLink) {
+    godOverviewLink.textContent = godName;
+    godOverviewLink.href = godOverviewUrl(godId);
+    godOverviewLink.title = `Back to ${godName} overview`;
+  }
 
   const portrait = document.getElementById("buildPortrait");
 
@@ -718,9 +752,9 @@ function renderBuildInfo(build) {
 
   if (backToBuildsLink) {
     if (godId) {
-      backToBuildsLink.href = `../builds.html?god=${encodeURIComponent(godId)}`;
+      backToBuildsLink.href = godOverviewUrl(godId);
     } else if (pantheonId) {
-      backToBuildsLink.href = `../index.html?pantheon=${encodeURIComponent(pantheonId)}`;
+      backToBuildsLink.href = pantheonSelectionUrl(pantheonId);
     } else {
       backToBuildsLink.href = "../index.html";
     }
@@ -755,7 +789,6 @@ function renderBuildOrderTable(build) {
         <tr class="phase-row">
           <td colspan="8">
             <span class="phase-label">
-              ${makeIcon("pop", "mini-icon", "Phase")}
               ${renderShortcodes(step.label || "Phase")}
             </span>
           </td>
@@ -766,11 +799,11 @@ function renderBuildOrderTable(build) {
     return `
       <tr>
         <td class="time-cell">${renderShortcodes(step.time || "")}</td>
-        <td>${makeResourceCell(step.food, "food", "food")}</td>
-        <td>${makeResourceCell(step.wood, "wood", "wood")}</td>
-        <td>${makeResourceCell(step.gold, "gold", "gold")}</td>
-        <td>${makeResourceCell(step.favor, "favor", "favor")}</td>
-        <td>${makeResourceCell(step.pop, "pop", "pop")}</td>
+        <td>${makeResourceCell(step.food, "food")}</td>
+        <td>${makeResourceCell(step.wood, "wood")}</td>
+        <td>${makeResourceCell(step.gold, "gold")}</td>
+        <td>${makeResourceCell(step.favor, "favor")}</td>
+        <td>${makeResourceCell(step.pop, "pop")}</td>
         <td class="action-cell">${makeActionCell(step)}</td>
         <td class="distribution-cell">${makeVillagerDistributionCell(step.split)}</td>
       </tr>
@@ -794,12 +827,12 @@ function renderBuildOrderTable(build) {
         <thead>
           <tr>
             <th>Time</th>
-            <th>${makeHeader("Food", "food")}</th>
-            <th>${makeHeader("Wood", "wood")}</th>
-            <th>${makeHeader("Gold", "gold")}</th>
-            <th>${makeHeader("Favor", "favor")}</th>
-            <th>${makeHeader("Pop", "pop")}</th>
-            <th>${makeHeader("Action", "villager")}</th>
+            <th>${makeHeader("Food")}</th>
+            <th>${makeHeader("Wood")}</th>
+            <th>${makeHeader("Gold")}</th>
+            <th>${makeHeader("Favor")}</th>
+            <th>${makeHeader("Pop")}</th>
+            <th>${makeHeader("Action")}</th>
             <th>Distribution</th>
           </tr>
         </thead>
