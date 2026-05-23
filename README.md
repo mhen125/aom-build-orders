@@ -18,6 +18,8 @@ Use a local server instead of opening files directly.
 bash
 python3 -m http.server 8000
 
+```
+
 Then open:
 
 http://localhost:8000
@@ -25,4 +27,3 @@ http://localhost:8000
 
 Important: run the site through a local server, not by double-clicking `index.html`, because the relative paths and browser storage behavior will be more consistent.
 
-```
